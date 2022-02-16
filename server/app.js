@@ -7,6 +7,7 @@ import "./connectDB.js";
 // routers
 import productRouter from "./controllers/product/index.js";
 import userRouter from "./controllers/user/index.js";
+import orderRouter from "./controllers/order/index.js";
 // middlewares
 const app = express();
 const port = process.env.PORT;
@@ -16,6 +17,7 @@ app.use(cookieParser());
 
 app.use("/api/products", productRouter);
 app.use("/api/users", userRouter);
+app.use("/api/orders", orderRouter);
 
 const server = app.listen(port, (req, res) => {
   console.log("Server started at port ", port);

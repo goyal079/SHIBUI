@@ -16,24 +16,45 @@ import { reviewValidations } from "../../middlewares/validations/index.js";
 */
 router.get("/", async (req, res) => {
   try {
-    const pageResults = 5;
+    const pageResults = 8;
+    const productCount = await Product.countDocuments();
     const apiFeatures = new ApiFeatures(Product.find(), req.query)
       .search()
       .filter()
       .pagination(pageResults);
     const products = await apiFeatures.query;
-    res.status(200).json(products);
+    res.status(200).json({ products, productCount });
   } catch (error) {
     console.error(error);
     res.status(500).json({ errormsg: "Internal Server Error" });
   }
 });
 /*
+      API EndPoint : /api/products/review/
+      Method : GET
+      Payload :  None   
+      Access Type : Public
+      Description :Get product reviews
+*/
+router.get("/reviews", async (req, res) => {
+  try {
+    const product = await Product.findById(req.query.productId);
+    if (!product) {
+      return res.status(404).json({ errormsg: "Product Not Found" });
+    }
+    res.status(200).json(product.reviews);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ errormsg: "Internal Server Error" });
+  }
+});
+
+/*
       API EndPoint : /api/products/id
       Method : GET
       Payload :  None 
       Access Type : Public
-      Description :Get all products
+      Description :Get one products details
 */
 router.get("/:id", async (req, res) => {
   try {
@@ -57,7 +78,8 @@ router.get("/:id", async (req, res) => {
 */
 router.post("/admin/new", verifyToken, async (req, res) => {
   try {
-    if (!isAdmin(req.user._id)) {
+    const admin = await isAdmin(req.user._id);
+    if (!admin) {
       return res.status(400).json({ errormsg: "Missing Admin Access" });
     }
     req.body.user = req.user._id;
@@ -78,7 +100,8 @@ router.post("/admin/new", verifyToken, async (req, res) => {
 */
 router.put("/admin/update/:id", verifyToken, async (req, res) => {
   try {
-    if (!isAdmin(req.user._id)) {
+    const admin = await isAdmin(req.user._id);
+    if (!admin) {
       return res.status(400).json({ errormsg: "Missing Admin Access" });
     }
     let product = await Product.findById(req.params.id);
@@ -102,7 +125,8 @@ router.put("/admin/update/:id", verifyToken, async (req, res) => {
 */
 router.delete("/admin/delete/:id", verifyToken, async (req, res) => {
   try {
-    if (!isAdmin(req.user._id)) {
+    const admin = await isAdmin(req.user._id);
+    if (!admin) {
       return res.status(400).json({ errormsg: "Missing Admin Access" });
     }
     const product = await Product.findById(req.params.id);
@@ -160,6 +184,34 @@ router.put("/review", reviewValidations(), verifyToken, async (req, res) => {
     await product.save();
     res.status(200).json({ successmsg: "Review added successfully" });
   } catch (error) {
+    res.status(500).json({ errormsg: "Internal Server Error" });
+  }
+});
+
+/*
+      API EndPoint : /api/products/review/
+      Method : GET
+      Payload :  None   
+      Access Type : Public
+      Description :Get product reviews
+*/
+router.delete("/reviews", verifyToken, async (req, res) => {
+  try {
+    const product = await Product.findById(req.query.productId);
+    if (!product) {
+      return res.status(404).json({ errormsg: "Product Not Found" });
+    }
+    product.reviews = product.reviews.filter((rev) => rev.user != req.user._id);
+    let avg = 0;
+    product.reviews.forEach((rev) => {
+      avg += rev.rating;
+    });
+    product.rating = avg / product.reviews.length;
+    product.reviewCount = product.reviews.length;
+    await product.save();
+    res.status(200).json(product.reviews);
+  } catch (error) {
+    console.error(error);
     res.status(500).json({ errormsg: "Internal Server Error" });
   }
 });
