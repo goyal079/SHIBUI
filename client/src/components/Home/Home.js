@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { listProducts, clearErrors } from "../../actions/productActions";
 import Loading from "../layout/Loading/Loading";
 import { useAlert } from "react-alert";
-function Home() {
+const Home = () => {
   const alert = useAlert();
   const dispatch = useDispatch();
   const { products, loading, error } = useSelector(
@@ -47,6 +47,6 @@ function Home() {
       )}
     </>
   );
-}
+};
 
 export default Home;

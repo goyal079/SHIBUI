@@ -13,7 +13,7 @@ import {
 import { useAlert } from "react-alert";
 import MetaData from "../layout/MetaData";
 import { UPDATE_PROFILE_RESET } from "../../types/userTypes";
-function UpdateProfile({ history }) {
+const UpdateProfile = ({ history }) => {
   const dispatch = useDispatch();
   const alert = useAlert();
 
@@ -132,6 +132,6 @@ function UpdateProfile({ history }) {
       )}
     </>
   );
-}
+};
 
 export default UpdateProfile;

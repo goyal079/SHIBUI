@@ -34,8 +34,8 @@ const options = {
   cartIconColorHover: "#eb4034",
   cartIconMargin: "1vmax",
 };
-function Header() {
+const Header = () => {
   return <ReactNavbar {...options} />;
-}
+};
 
 export default Header;

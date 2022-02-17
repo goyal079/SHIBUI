@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Redirect, Route } from "react-router-dom";
-function ProtectedRoute({ isAdmin, component: Component, ...rest }) {
+const ProtectedRoute = ({ isAdmin, component: Component, ...rest }) => {
   const { loading, isAuthenticated, user } = useSelector((state) => state.user);
   return (
     <>
@@ -23,6 +23,6 @@ function ProtectedRoute({ isAdmin, component: Component, ...rest }) {
       )}
     </>
   );
-}
+};
 
 export default ProtectedRoute;

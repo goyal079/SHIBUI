@@ -98,7 +98,7 @@ router.post("/admin/new", verifyToken, async (req, res) => {
 /*
       API EndPoint : /api/products/update/:id
       Method : PUT
-      Payload :  new product data 
+      Payload :  new product data   
       Access Type : Admin
       Description :Update products
 */

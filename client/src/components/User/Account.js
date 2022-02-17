@@ -8,7 +8,7 @@ import FaceIcon from "@material-ui/icons/Face";
 import { useDispatch, useSelector } from "react-redux";
 import { login, register, clearErrors } from "../../actions/userActions.js";
 import { useAlert } from "react-alert";
-function Account({ history }) {
+const Account = ({ history }) => {
   const dispatch = useDispatch();
   const alert = useAlert();
 
@@ -185,6 +185,6 @@ function Account({ history }) {
       )}
     </>
   );
-}
+};
 
 export default Account;

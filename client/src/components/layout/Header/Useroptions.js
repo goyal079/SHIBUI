@@ -12,7 +12,7 @@ import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
 import profilePng from "../../../images/Profile.png";
 import { logout } from "../../../actions/userActions.js";
-function Useroptions({ user }) {
+const Useroptions = ({ user }) => {
   const [open, setOpen] = useState(false);
   const history = useHistory();
   const alert = useAlert();
@@ -87,6 +87,6 @@ function Useroptions({ user }) {
       </SpeedDial>
     </>
   );
-}
+};
 
 export default Useroptions;
