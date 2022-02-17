@@ -8,7 +8,7 @@ import FaceIcon from "@material-ui/icons/Face";
 import { useDispatch, useSelector } from "react-redux";
 import { login, register, clearErrors } from "../../actions/userActions.js";
 import { useAlert } from "react-alert";
-const Account = ({ history }) => {
+const Account = ({ history, location }) => {
   const dispatch = useDispatch();
   const alert = useAlert();
 
@@ -33,15 +33,16 @@ const Account = ({ history }) => {
   const registerTab = useRef(null);
   const switcherTab = useRef(null);
 
+  const redirect = location.search ? location.search.split("=")[1] : "/account";
   useEffect(() => {
     if (error) {
       alert.error(error);
       dispatch(clearErrors());
     }
     if (isAuthenticated) {
-      history.push("/account");
+      history.push(redirect);
     }
-  }, [dispatch, error, alert, isAuthenticated, history]);
+  }, [dispatch, error, alert, isAuthenticated, history, redirect]);
   const loginSubmit = (e) => {
     e.preventDefault();
     dispatch(login(loginEmail, loginPassword));
