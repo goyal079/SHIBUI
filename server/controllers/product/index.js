@@ -20,10 +20,14 @@ router.get("/", async (req, res) => {
     const productCount = await Product.countDocuments();
     const apiFeatures = new ApiFeatures(Product.find(), req.query)
       .search()
-      .filter()
-      .pagination(pageResults);
-    const products = await apiFeatures.query;
-    res.status(200).json({ products, productCount });
+      .filter();
+    let products = await apiFeatures.query;
+    let filteredCount = products.length;
+    apiFeatures.pagination(pageResults);
+    products = await apiFeatures.query;
+    res
+      .status(200)
+      .json({ products, productCount, pageResults, filteredCount });
   } catch (error) {
     console.error(error);
     res.status(500).json({ errormsg: "Internal Server Error" });

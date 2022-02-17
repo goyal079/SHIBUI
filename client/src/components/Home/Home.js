@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { CgMouse } from "react-icons/all";
 import "./home.css";
-import Product from "./productCard";
+import ProductCard from "./productCard";
 import MetaData from "../layout/MetaData";
 import { useSelector, useDispatch } from "react-redux";
 import { listProducts, clearErrors } from "../../actions/productActions";
@@ -10,12 +10,13 @@ import { useAlert } from "react-alert";
 function Home() {
   const alert = useAlert();
   const dispatch = useDispatch();
-  const { products, loading, error, productCount } = useSelector(
+  const { products, loading, error } = useSelector(
     (state) => state.productData
   );
   useEffect(() => {
     if (error) {
-      return alert.error(error);
+      alert.error(error);
+      dispatch(clearErrors());
     }
     dispatch(listProducts());
   }, [dispatch, error, alert]);
@@ -38,7 +39,9 @@ function Home() {
           <h2 className="homeHeading">Featured</h2>
           <div className="container" id="container">
             {products &&
-              products.map((product) => <Product product={product} />)}
+              products.map((product) => (
+                <ProductCard key={product._id} product={product} />
+              ))}
           </div>
         </>
       )}
