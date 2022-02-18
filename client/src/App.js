@@ -29,6 +29,8 @@ import { loadStripe } from "@stripe/stripe-js";
 import OrderSuccess from "./components/Cart/OrderSuccess";
 import MyOrders from "./components/Order/MyOrders";
 import OrderDetails from "./components/Order/OrderDetails";
+import Dashboard from "./components/admin/Dashboard";
+import Productlist from "./components/admin/Productlist";
 const App = () => {
   const { isAuthenticated, user } = useSelector((state) => state.user);
   const [stripeApiKey, setStripeApiKey] = useState("");
@@ -73,6 +75,18 @@ const App = () => {
       <ProtectedRoute exact path="/success" component={OrderSuccess} />
       <ProtectedRoute exact path="/orders" component={MyOrders} />
       <ProtectedRoute exact path="/order/:id" component={OrderDetails} />
+      <ProtectedRoute
+        isAdmin={true}
+        exact
+        path="/admin/dashboard"
+        component={Dashboard}
+      />
+      <ProtectedRoute
+        isAdmin={true}
+        exact
+        path="/admin/products"
+        component={Productlist}
+      />
       <Footer />
     </Router>
   );
