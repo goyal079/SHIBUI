@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { CgMouse } from "react-icons/all";
 import "./home.css";
-import ProductCard from "./productCard";
+import ProductCard from "./ProductCard";
 import MetaData from "../layout/MetaData";
 import { useSelector, useDispatch } from "react-redux";
 import { listProducts, clearErrors } from "../../actions/productActions";

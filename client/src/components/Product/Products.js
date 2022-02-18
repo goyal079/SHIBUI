@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { listProducts, clearErrors } from "../../actions/productActions";
 import Loading from "../layout/Loading/Loading";
-import ProductCard from "../Home/productCard.js";
+import ProductCard from "../Home/ProductCard.js";
 import MetaData from "../layout/MetaData";
 import "./Products.css";
 import { useAlert } from "react-alert";

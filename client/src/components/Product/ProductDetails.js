@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Carousel from "react-material-ui-carousel";
 import "./productDetails.css";
 import { useSelector, useDispatch } from "react-redux";
-import ReactStars from "react-rating-stars-component";
 import {
   listProductDetails,
   newReview,
@@ -32,12 +31,10 @@ const ProductDetails = ({ match }) => {
     (state) => state.newReview
   );
   const options = {
-    edit: false,
-    color: "rgba(20,20,20,0.1)",
-    activeColor: "tomato",
-    size: window.innerWidth < 600 ? 20 : 25,
+    size: "large",
     value: product.rating,
-    isHalf: true,
+    readOnly: true,
+    precision: 0.5,
   };
   const [quantity, setQuantity] = useState(1);
   const [open, setOpen] = useState(false);
@@ -119,7 +116,7 @@ const ProductDetails = ({ match }) => {
                 <p>Product # {product._id}</p>
               </div>
               <div className="detailsBlock-2">
-                <ReactStars {...options} />
+                <Rating {...options} />
                 <span className="detailsBlock-2-span">
                   ({product.reviewCount} Reviews)
                 </span>
