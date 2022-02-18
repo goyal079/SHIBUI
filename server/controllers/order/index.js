@@ -13,12 +13,8 @@ const router = express.Router();
       Access Type : Private
       Description :Create New Order
 */
-router.post("/new/:id", verifyToken, async (req, res) => {
+router.post("/new", verifyToken, async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id);
-    if (product.stock <= 0) {
-      return res.status(404).json({ errormsg: "Out of Stock" });
-    }
     const newOrder = new Order({
       ...req.body,
       user: req.user._id,
