@@ -1,10 +1,13 @@
 import {
   ADD_TO_CART,
-  CLEAR_ERRORS,
+  SAVE_SHIPPING_INFO,
   REMOVE_FROM_CART,
 } from "../types/cartTypes";
 
-export const cartReducer = (state = { cartItems: [] }, action) => {
+export const cartReducer = (
+  state = { cartItems: [], shippingInfo: {} },
+  action
+) => {
   switch (action.type) {
     case ADD_TO_CART:
       const item = action.payload;
@@ -27,8 +30,11 @@ export const cartReducer = (state = { cartItems: [] }, action) => {
         ...state,
         cartItems: state.cartItems.filter((i) => i.product !== action.payload),
       };
-    case CLEAR_ERRORS:
-      return { ...state, error: null };
+    case SAVE_SHIPPING_INFO:
+      return {
+        ...state,
+        shippingInfo: action.payload,
+      };
     default:
       return state;
   }
