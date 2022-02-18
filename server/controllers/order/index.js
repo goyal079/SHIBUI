@@ -38,9 +38,6 @@ router.post("/new", verifyToken, async (req, res) => {
 router.get("/my", verifyToken, async (req, res) => {
   try {
     const orders = await Order.find({ user: req.user._id });
-    if (!orders) {
-      return res.status(404).json({ errormsg: "No orders available" });
-    }
     res.status(200).json(orders);
   } catch (error) {
     console.error(error);
