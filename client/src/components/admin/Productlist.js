@@ -15,7 +15,7 @@ const Productlist = ({ history }) => {
 
   const alert = useAlert();
 
-  const { error, products } = useSelector((state) => state.products);
+  const { error, products } = useSelector((state) => state.productData);
 
   useEffect(() => {
     if (error) {
@@ -35,7 +35,7 @@ const Productlist = ({ history }) => {
     // }
 
     dispatch(listAdminProducts());
-  }, [dispatch, alert, error, deleteError, history, isDeleted]);
+  }, [dispatch, alert, error, history]);
   const columns = [
     { field: "id", headerName: "Product ID", minWidth: 200, flex: 0.5 },
 

@@ -1,14 +1,33 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Sidebar from "./Sidebar";
 import "./Dashboard.css";
 import { Typography } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { Doughnut, Line } from "react-chartjs-2";
 import { useSelector, useDispatch } from "react-redux";
-import { getAdminProduct } from "../../actions/productAction";
+import { listAdminProducts } from "../../actions/productActions";
 import MetaData from "../layout/MetaData";
 import Productlist from "./Productlist";
 const Dashboard = () => {
+  const dispatch = useDispatch();
+
+  const { products } = useSelector((state) => state.productData);
+
+  let outOfStock = 0;
+
+  products &&
+    products.forEach((item) => {
+      if (item.stock === 0) {
+        outOfStock += 1;
+      }
+    });
+
+  useEffect(() => {
+    dispatch(listAdminProducts());
+    // dispatch(getAllOrders());
+    // dispatch(getAllUsers());
+  }, [dispatch]);
+
   const lineState = {
     labels: ["Initial Amount", "Amount Earned"],
     datasets: [
@@ -16,7 +35,7 @@ const Dashboard = () => {
         label: "TOTAL AMOUNT",
         backgroundColor: ["tomato"],
         hoverBackgroundColor: ["rgb(197, 72, 49)"],
-        data: [0, totalAmount],
+        data: [outOfStock, products.length - outOfStock],
       },
     ],
   };
@@ -26,7 +45,7 @@ const Dashboard = () => {
       {
         backgroundColor: ["#00A6B4", "#6800B4"],
         hoverBackgroundColor: ["#4B5000", "#35014F"],
-        data: [outOfStock, products.length - outOfStock],
+        data: [0, 10],
       },
     ],
   };
@@ -39,13 +58,13 @@ const Dashboard = () => {
         <div className="dashboardSummary">
           <div>
             <p>
-              Total Amount <br /> ₹{totalAmount}
+              Total Amount <br /> ₹{5000}
             </p>
           </div>
           <div className="dashboardSummaryBox2">
             <Link to="/admin/products">
               <p>Product</p>
-              {/* <p>{products && products.length}</p> */}
+              <p>{products && products.length}</p>
             </Link>
             <Link to="/admin/orders">
               <p>Orders</p>
