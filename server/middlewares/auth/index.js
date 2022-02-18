@@ -10,7 +10,7 @@ function verifyToken(req, res, next) {
     if (!token) {
       return res
         .status(401)
-        .json({ msg: "Session Expired. Login to get access" });
+        .json({ errormsg: "Session Expired. Login to get access" });
     }
     let bufferToken = AES.decrypt(token, process.env.AESKEY);
     let decryptedToken = enc.stringify(bufferToken);
@@ -19,7 +19,7 @@ function verifyToken(req, res, next) {
     next();
   } catch (error) {
     console.log(error);
-    return res.status(401).json({ msg: "error" });
+    return res.status(401).json({ errormsg: "Internal Server Error" });
   }
 }
 

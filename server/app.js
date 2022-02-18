@@ -27,10 +27,12 @@ app.use(fileUpload());
 import productRouter from "./controllers/product/index.js";
 import userRouter from "./controllers/user/index.js";
 import orderRouter from "./controllers/order/index.js";
+import paymentRouter from "./controllers/payment/index.js";
 
 app.use("/api/products", productRouter);
 app.use("/api/users", userRouter);
 app.use("/api/orders", orderRouter);
+app.use("/api/payments", paymentRouter);
 
 const server = app.listen(port, (req, res) => {
   console.log("Server started at port ", port);
