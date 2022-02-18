@@ -12,6 +12,10 @@ import {
   NEW_REVIEW_REQUEST,
   NEW_REVIEW_SUCCESS,
   NEW_REVIEW_RESET,
+  NEW_PRODUCT_FAIL,
+  NEW_PRODUCT_REQUEST,
+  NEW_PRODUCT_SUCCESS,
+  NEW_PRODUCT_RESET,
   CLEAR_ERRORS,
 } from "../types/productTypes";
 
@@ -73,6 +77,27 @@ export const newReviewReducer = (state = {}, action) => {
     case NEW_REVIEW_FAIL:
       return { ...state, loading: false, error: action.payload };
     case NEW_REVIEW_RESET:
+      return { ...state, loading: false, success: false };
+    case CLEAR_ERRORS:
+      return { ...state, error: null };
+    default:
+      return state;
+  }
+};
+
+export const newProductReducer = (state = { product: {} }, action) => {
+  switch (action.type) {
+    case NEW_PRODUCT_REQUEST:
+      return { ...state, loading: true };
+    case NEW_PRODUCT_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+        product: action.payload,
+      };
+    case NEW_PRODUCT_FAIL:
+      return { ...state, loading: false, error: action.payload };
+    case NEW_PRODUCT_RESET:
       return { ...state, loading: false, success: false };
     case CLEAR_ERRORS:
       return { ...state, error: null };

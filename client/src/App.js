@@ -1,5 +1,5 @@
 import Header from "./components/layout/Header/Header";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import WebFont from "webfontloader";
 import React, { useEffect, useState } from "react";
 import Footer from "./components/layout/Footer/Footer";
@@ -31,6 +31,7 @@ import MyOrders from "./components/Order/MyOrders";
 import OrderDetails from "./components/Order/OrderDetails";
 import Dashboard from "./components/admin/Dashboard";
 import Productlist from "./components/admin/Productlist";
+import NewProduct from "./components/admin/NewProduct";
 const App = () => {
   const { isAuthenticated, user } = useSelector((state) => state.user);
   const [stripeApiKey, setStripeApiKey] = useState("");
@@ -86,6 +87,12 @@ const App = () => {
         exact
         path="/admin/products"
         component={Productlist}
+      />
+      <ProtectedRoute
+        isAdmin={true}
+        exact
+        path="/admin/product"
+        component={NewProduct}
       />
       <Footer />
     </Router>

@@ -7,6 +7,7 @@ import User from "../../models/User.js";
 import ApiFeatures from "../../utils/apiFeatures.js";
 import isAdmin from "../../helpers/isAdmin.js";
 import { reviewValidations } from "../../middlewares/validations/index.js";
+import cloudinary from "cloudinary";
 /*
       API EndPoint : /api/products/
       Method : GET
@@ -100,6 +101,24 @@ router.post("/admin/new", verifyToken, async (req, res) => {
     if (!admin) {
       return res.status(400).json({ errormsg: "Missing Admin Access" });
     }
+
+    let images = [];
+    if (typeof req.body.images === "string") {
+      images.push(req.body.images);
+    } else {
+      images = req.body.images;
+    }
+    const imagesLink = [];
+    for (let i = 0; i < images.length; i++) {
+      const results = await cloudinary.v2.uploader.upload(req.body.avatar, {
+        folder: "products",
+      });
+      imagesLink.push({
+        public_id: results.public_id,
+        url: results.url,
+      });
+    }
+    req.body.images = imagesLink;
     req.body.user = req.user._id;
     const newProduct = new Product(req.body);
     await newProduct.save();

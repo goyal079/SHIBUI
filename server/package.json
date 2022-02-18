@@ -23,6 +23,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.13.5",
     "nodemailer": "^6.7.2",
+    "stripe": "^8.203.0",
     "twilio": "^3.74.0"
   },
   "devDependencies": {
