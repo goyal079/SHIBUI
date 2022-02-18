@@ -110,7 +110,7 @@ router.post("/admin/new", verifyToken, async (req, res) => {
     }
     const imagesLink = [];
     for (let i = 0; i < images.length; i++) {
-      const results = await cloudinary.v2.uploader.upload(req.body.avatar, {
+      const results = await cloudinary.v2.uploader.upload(images[i], {
         folder: "products",
       });
       imagesLink.push({
@@ -169,6 +169,9 @@ router.delete("/admin/delete/:id", verifyToken, async (req, res) => {
     const product = await Product.findById(req.params.id);
     if (!product) {
       return res.status(404).json({ errormsg: "Product Not Found" });
+    }
+    for (let i = 0; i < product.images.length; i++) {
+       await cloudinary.v2.uploader.destroy(product.images[i].public_id);
     }
     await product.remove();
     res.status(200).json({ successmsg: "Product deleted successfully" });

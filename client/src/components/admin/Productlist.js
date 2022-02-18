@@ -9,33 +9,44 @@ import MetaData from "../layout/MetaData";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import SideBar from "./Sidebar";
-import { listAdminProducts, clearErrors } from "../../actions/productActions";
+import { DELETE_PRODUCT_RESET } from "../../types/productTypes";
+import {
+  listAdminProducts,
+  clearErrors,
+  deleteProduct,
+} from "../../actions/productActions";
 const Productlist = ({ history }) => {
   const dispatch = useDispatch();
 
   const alert = useAlert();
 
   const { error, products } = useSelector((state) => state.productData);
+  const { error: deleteError, isDeleted } = useSelector(
+    (state) => state.product
+  );
 
+  const deleteProductHandler = (id) => {
+    dispatch(deleteProduct(id));
+  };
   useEffect(() => {
     if (error) {
       alert.error(error);
       dispatch(clearErrors());
     }
 
-    // if (deleteError) {
-    //   alert.error(deleteError);
-    //   dispatch(clearErrors());
-    // }
+    if (deleteError) {
+      alert.error(deleteError);
+      dispatch(clearErrors());
+    }
 
-    // if (isDeleted) {
-    //   alert.success("Product Deleted Successfully");
-    //   history.push("/admin/dashboard");
-    //   dispatch({ type: DELETE_PRODUCT_RESET });
-    // }
+    if (isDeleted) {
+      alert.success("Product Deleted Successfully");
+      history.push("/admin/dashboard");
+      dispatch({ type: DELETE_PRODUCT_RESET });
+    }
 
     dispatch(listAdminProducts());
-  }, [dispatch, alert, error, history]);
+  }, [dispatch, alert, error, history, deleteError, isDeleted]);
   const columns = [
     { field: "id", headerName: "Product ID", minWidth: 200, flex: 0.5 },
 
@@ -76,9 +87,9 @@ const Productlist = ({ history }) => {
             </Link>
 
             <Button
-            // onClick={() =>
-            //   deleteProductHandler(params.getValue(params.id, "id"))
-            // }
+              onClick={() =>
+                deleteProductHandler(params.getValue(params.id, "id"))
+              }
             >
               <DeleteIcon />
             </Button>
