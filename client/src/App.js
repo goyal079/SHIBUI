@@ -1,5 +1,5 @@
 import Header from "./components/layout/Header/Header";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import WebFont from "webfontloader";
 import React, { useEffect, useState } from "react";
 import Footer from "./components/layout/Footer/Footer";
@@ -28,6 +28,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import OrderSuccess from "./components/Cart/OrderSuccess";
 import MyOrders from "./components/Order/MyOrders";
+import OrderDetails from "./components/Order/OrderDetails";
 const App = () => {
   const { isAuthenticated, user } = useSelector((state) => state.user);
   const [stripeApiKey, setStripeApiKey] = useState("");
@@ -71,6 +72,7 @@ const App = () => {
       )}
       <ProtectedRoute exact path="/success" component={OrderSuccess} />
       <ProtectedRoute exact path="/orders" component={MyOrders} />
+      <ProtectedRoute exact path="/order/:id" component={OrderDetails} />
       <Footer />
     </Router>
   );
