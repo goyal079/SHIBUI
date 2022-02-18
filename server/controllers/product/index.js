@@ -33,6 +33,20 @@ router.get("/", async (req, res) => {
     res.status(500).json({ errormsg: "Internal Server Error" });
   }
 });
+
+router.get("/admin", verifyToken, async (req, res) => {
+  try {
+    const admin = await isAdmin(req.user._id);
+    if (!admin) {
+      return res.status(400).json({ errormsg: "Missing Admin Access" });
+    }
+    const products = await Product.find();
+    res.status(200).json(products);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ errormsg: "Internal Server Error" });
+  }
+});
 /*
       API EndPoint : /api/products/review/
       Method : GET
