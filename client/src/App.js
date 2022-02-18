@@ -32,6 +32,7 @@ import OrderDetails from "./components/Order/OrderDetails";
 import Dashboard from "./components/admin/Dashboard";
 import Productlist from "./components/admin/Productlist";
 import NewProduct from "./components/admin/NewProduct";
+import UpdateProduct from "./components/admin/UpdateProduct";
 const App = () => {
   const { isAuthenticated, user } = useSelector((state) => state.user);
   const [stripeApiKey, setStripeApiKey] = useState("");
@@ -93,6 +94,12 @@ const App = () => {
         exact
         path="/admin/product"
         component={NewProduct}
+      />
+      <ProtectedRoute
+        isAdmin={true}
+        exact
+        path="/admin/product/:id"
+        component={UpdateProduct}
       />
       <Footer />
     </Router>
