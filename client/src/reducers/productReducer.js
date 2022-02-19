@@ -24,6 +24,13 @@ import {
   UPDATE_PRODUCT_REQUEST,
   UPDATE_PRODUCT_RESET,
   UPDATE_PRODUCT_SUCCESS,
+  ALL_REVIEWS_FAIL,
+  ALL_REVIEWS_REQUEST,
+  ALL_REVIEWS_SUCCESS,
+  DELETE_REVIEW_FAIL,
+  DELETE_REVIEW_REQUEST,
+  DELETE_REVIEW_RESET,
+  DELETE_REVIEW_SUCCESS,
   CLEAR_ERRORS,
 } from "../types/productTypes";
 
@@ -138,6 +145,44 @@ export const productReducer = (state = {}, action) => {
       return { ...state, loading: false, isDeleted: false };
     case UPDATE_PRODUCT_RESET:
       return { ...state, loading: false, isUpdated: false };
+    case CLEAR_ERRORS:
+      return { ...state, error: null };
+    default:
+      return state;
+  }
+};
+
+export const productReviewsReducer = (state = { reviews: [] }, action) => {
+  switch (action.type) {
+    case ALL_REVIEWS_REQUEST:
+      return { ...state, loading: true };
+    case ALL_REVIEWS_SUCCESS:
+      return {
+        loading: false,
+        reviews: action.payload,
+      };
+    case ALL_REVIEWS_FAIL:
+      return { ...state, loading: false, error: action.payload };
+    case CLEAR_ERRORS:
+      return { ...state, error: null };
+    default:
+      return state;
+  }
+};
+
+export const reviewsReducer = (state = {}, action) => {
+  switch (action.type) {
+    case DELETE_REVIEW_REQUEST:
+      return { ...state, loading: true };
+    case DELETE_REVIEW_SUCCESS:
+      return {
+        loading: false,
+        isDeleted: true,
+      };
+    case DELETE_REVIEW_FAIL:
+      return { ...state, loading: false, error: action.payload };
+    case DELETE_REVIEW_RESET:
+      return { ...state, loading: false, isDeleted: false };
     case CLEAR_ERRORS:
       return { ...state, error: null };
     default:

@@ -263,12 +263,16 @@ router.delete("/reviews", verifyToken, async (req, res) => {
     if (!product) {
       return res.status(404).json({ errormsg: "Product Not Found" });
     }
-    product.reviews = product.reviews.filter((rev) => rev.user != req.user._id);
+    product.reviews = product.reviews.filter((rev) => rev._id != req.query.id);
     let avg = 0;
     product.reviews.forEach((rev) => {
       avg += rev.rating;
     });
-    product.rating = avg / product.reviews.length;
+    if (product.reviews.length > 0) {
+      product.rating = avg / product.reviews.length;
+    } else {
+      product.rating = 0;
+    }
     product.reviewCount = product.reviews.length;
     await product.save();
     res.status(200).json(product.reviews);

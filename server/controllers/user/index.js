@@ -312,7 +312,8 @@ router.put("/admin/:id", verifyToken, async (req, res) => {
     const user = await User.findById(req.params.id);
     user.name = req.body.name ? req.body.name : user.name;
     user.email = req.body.email ? req.body.email : user.email;
-    user.isAdmin = req.body.isAdmin ? req.body.isAdmin : user.isAdmin;
+    user.isAdmin =
+      req.body.isAdmin != undefined ? req.body.isAdmin : user.isAdmin;
     await user.save();
     res.status(200).json({ successmsg: "User Updated Successfully" });
   } catch (error) {
@@ -337,6 +338,7 @@ router.delete("/delete/:id", verifyToken, async (req, res) => {
     if (!user) {
       return res.status(404).json({ errormsg: "User Not Found" });
     }
+    await cloudinary.v2.uploader.destroy(user.avatar.public_id);
     await user.remove();
     res.status(200).json({ successmsg: "User Deleted Successfully" });
   } catch (error) {

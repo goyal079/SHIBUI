@@ -37,6 +37,7 @@ import Orders from "./components/admin/Orders";
 import OrderUpdate from "./components/admin/OrderUpdate";
 import AllUsers from "./components/admin/AllUsers";
 import EditUser from "./components/admin/EditUser";
+import Reviews from "./components/admin/Reviews";
 const App = () => {
   const { isAuthenticated, user } = useSelector((state) => state.user);
   const [stripeApiKey, setStripeApiKey] = useState("");
@@ -128,6 +129,12 @@ const App = () => {
         exact
         path="/admin/user/:id"
         component={EditUser}
+      />
+      <ProtectedRoute
+        isAdmin={true}
+        exact
+        path="/admin/reviews"
+        component={Reviews}
       />
       <Footer />
     </Router>
