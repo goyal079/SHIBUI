@@ -115,14 +115,16 @@ router.put("/:id", verifyToken, async (req, res) => {
     if (!order) {
       return res.status(404).json({ errormsg: "Order Not Found" });
     }
-    if (order.orderStatus == "delivered") {
+    if (order.orderStatus == "Delivered") {
       return res.status(404).json({ errormsg: "ALready Delivered" });
     }
-    order.orderItems.forEach(async (item) => {
-      await updateStock(item.product, item.quantity);
-    });
-    order.orderStatus = req.body.status.toLowerCase();
-    if (req.body.status.toLowerCase() == "delivered") {
+    if (req.body.status == "Shipped") {
+      order.orderItems.forEach(async (item) => {
+        await updateStock(item.product, item.quantity);
+      });
+    }
+    order.orderStatus = req.body.status;
+    if (req.body.status == "Delivered") {
       order.deliveredAt = Date.now();
     }
     await order.save();
