@@ -10,6 +10,20 @@ import {
   LOAD_USER_REQUEST,
   LOAD_USER_SUCCESS,
   LOGOUT_FAIL,
+  GET_USERS_FAIL,
+  GET_USERS_REQUEST,
+  GET_USERS_SUCCESS,
+  DELETE_USERS_FAIL,
+  DELETE_USERS_REQUEST,
+  DELETE_USERS_SUCCESS,
+  DELETE_USERS_RESET,
+  UPDATE_USERS_FAIL,
+  UPDATE_USERS_RESET,
+  UPDATE_USERS_REQUEST,
+  UPDATE_USERS_SUCCESS,
+  USERS_DETAILS_FAIL,
+  USERS_DETAILS_REQUEST,
+  USERS_DETAILS_SUCCESS,
   UPDATE_PROFILE_FAIL,
   UPDATE_PROFILE_REQUEST,
   UPDATE_PROFILE_SUCCESS,
@@ -193,6 +207,84 @@ export const resetPassword = (token, passwords) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: RESET_PASSWORD_FAIL,
+      payload: error.response.data.errormsg,
+    });
+  }
+};
+
+// get all users
+export const getAllUsers = () => async (dispatch) => {
+  try {
+    dispatch({ type: GET_USERS_REQUEST });
+
+    const { data } = await axios.get(`/api/users/admin`);
+
+    dispatch({ type: GET_USERS_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({ type: GET_USERS_FAIL, payload: error.response.data.errormsg });
+  }
+};
+
+// get user details
+export const getUserDetails = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: USERS_DETAILS_REQUEST });
+
+    const { data } = await axios.get(`/api/users/admin/${id}`);
+
+    dispatch({ type: USERS_DETAILS_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: USERS_DETAILS_FAIL,
+      payload: error.response.data.errormsg,
+    });
+  }
+};
+
+// update user info
+
+export const updateUser = (id, userData) => async (dispatch) => {
+  try {
+    dispatch({ type: UPDATE_USERS_REQUEST });
+
+    const config = { headers: { "Content-Type": "application/json" } };
+
+    const { data } = await axios.put(
+      `/api/users/admin/${id}`,
+      userData,
+      config
+    );
+    if (data.errormsg) {
+      dispatch({
+        type: UPDATE_USERS_FAIL,
+        payload: data.errormsg,
+      });
+    }
+    dispatch({ type: UPDATE_USERS_SUCCESS });
+  } catch (error) {
+    dispatch({
+      type: UPDATE_USERS_FAIL,
+      payload: error.response.data.errormsg,
+    });
+  }
+};
+
+// delete user
+export const deleteUser = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: DELETE_USERS_REQUEST });
+
+    const { data } = await axios.delete(`/api/users/delete/${id}`);
+    if (data.errormsg) {
+      dispatch({
+        type: DELETE_USERS_FAIL,
+        payload: data.errormsg,
+      });
+    }
+    dispatch({ type: DELETE_USERS_SUCCESS, payload: data.successmsg });
+  } catch (error) {
+    dispatch({
+      type: DELETE_USERS_FAIL,
       payload: error.response.data.errormsg,
     });
   }

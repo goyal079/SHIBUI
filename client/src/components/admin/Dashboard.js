@@ -8,11 +8,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { listAdminProducts } from "../../actions/productActions";
 import MetaData from "../layout/MetaData";
 import Productlist from "./Productlist";
+import { getAllOrders } from "../../actions/orderActions";
+import { getAllUsers } from "../../actions/userActions";
 const Dashboard = () => {
   const dispatch = useDispatch();
 
   const { products } = useSelector((state) => state.productData);
-
+  const { orders } = useSelector((state) => state.allOrders);
+  const { users } = useSelector((state) => state.allUserData);
   let outOfStock = 0;
 
   products &&
@@ -24,8 +27,8 @@ const Dashboard = () => {
 
   useEffect(() => {
     dispatch(listAdminProducts());
-    // dispatch(getAllOrders());
-    // dispatch(getAllUsers());
+    dispatch(getAllOrders());
+    dispatch(getAllUsers());
   }, [dispatch]);
 
   const lineState = {
@@ -68,11 +71,11 @@ const Dashboard = () => {
             </Link>
             <Link to="/admin/orders">
               <p>Orders</p>
-              {/* <p>{orders && orders.length}</p> */}
+              <p>{orders && orders.length}</p>
             </Link>
             <Link to="/admin/users">
               <p>Users</p>
-              {/* <p>{users && users.length}</p> */}
+              <p>{users && users.length}</p>
             </Link>
           </div>
         </div>
