@@ -6,8 +6,6 @@ import { Link } from "react-router-dom";
 import { Doughnut, Line } from "react-chartjs-2";
 import { useSelector, useDispatch } from "react-redux";
 import { listAdminProducts } from "../../actions/productActions";
-import MetaData from "../layout/MetaData";
-import Productlist from "./Productlist";
 import { getAllOrders } from "../../actions/orderActions";
 import { getAllUsers } from "../../actions/userActions";
 const Dashboard = () => {
@@ -31,6 +29,8 @@ const Dashboard = () => {
     dispatch(getAllUsers());
   }, [dispatch]);
 
+  let totalAmount = 0;
+  orders && orders.forEach((order) => (totalAmount += order.totalPrice));
   const lineState = {
     labels: ["Initial Amount", "Amount Earned"],
     datasets: [
@@ -48,7 +48,7 @@ const Dashboard = () => {
       {
         backgroundColor: ["#00A6B4", "#6800B4"],
         hoverBackgroundColor: ["#4B5000", "#35014F"],
-        data: [0, 10],
+        data: [0, totalAmount],
       },
     ],
   };
@@ -61,7 +61,7 @@ const Dashboard = () => {
         <div className="dashboardSummary">
           <div>
             <p>
-              Total Amount <br /> ₹{5000}
+              Total Amount <br /> ₹{totalAmount}
             </p>
           </div>
           <div className="dashboardSummaryBox2">

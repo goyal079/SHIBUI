@@ -102,8 +102,8 @@ const ProductDetails = ({ match }) => {
                   product.images.map((item, i) => (
                     <img
                       className="CarouselImage"
-                      key={item.url}
-                      src="https://images.unsplash.com/photo-1644952720775-c769200e6b67?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80"
+                      key={i}
+                      src={item.url}
                       alt={`${i} Slide`}
                     />
                   ))}

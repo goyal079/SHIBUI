@@ -29,7 +29,6 @@ const UpdateProfile = ({ history }) => {
     e.preventDefault();
 
     const myForm = new FormData();
-
     myForm.set("name", name);
     myForm.set("email", email);
     myForm.set("avatar", avatar);

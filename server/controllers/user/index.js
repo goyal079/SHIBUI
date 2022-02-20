@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import crypto from "crypto";
 import {
   errorMiddleware,
+  passwordUpdateRules,
   registrationRules,
   userLoginValidations,
 } from "../../middlewares/validations/index.js";
@@ -125,7 +126,9 @@ router.post("/password/forgot", async (req, res) => {
     }
     const resetToken = passwordToken(user);
     await user.save({ validateBeforeSave: false });
-    const userPasswordUrl = `${req.protocol}://${process.env.CLIENT_URL}/password/reset/${resetToken}`;
+    const userPasswordUrl = `${req.protocol}://${req.get(
+      "host"
+    )}/password/reset/${resetToken}`;
     const message = `Your password reset url is :- \n\n ${userPasswordUrl} \n\n If you have not requested this email then, please ignore it `;
     sendMail({ email: user.email, message, subject: "Reset Password Link" });
     res
@@ -196,30 +199,35 @@ router.get("/me", verifyToken, async (req, res) => {
       Access Type : Private
       Description :change password
 */
-router.put("/password/update", verifyToken, async (req, res) => {
-  try {
-    const user = await User.findById(req.user._id);
-    let correctPassword = await bcrypt.compare(
-      req.body.oldpassword,
-      user.password
-    );
-    if (!correctPassword) {
-      return res
-        .status(401)
-        .json({ errormsg: "Your old password is incorrect" });
+router.put(
+  "/password/update",
+  passwordUpdateRules(),
+  verifyToken,
+  async (req, res) => {
+    try {
+      const user = await User.findById(req.user._id);
+      let correctPassword = await bcrypt.compare(
+        req.body.oldpassword,
+        user.password
+      );
+      if (!correctPassword) {
+        return res
+          .status(401)
+          .json({ errormsg: "Your old password is incorrect" });
+      }
+      if (req.body.newpassword !== req.body.confirmpassword) {
+        return res.status(400).json({ errormsg: "Passwords do not Match" });
+      }
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(req.body.newpassword, salt);
+      await user.save();
+      sendToken(user, 200, res);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ errormsg: "Internal Server Error" });
     }
-    if (req.body.newpassword !== req.body.confirmpassword) {
-      return res.status(400).json({ errormsg: "Passwords do not Match" });
-    }
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(req.body.newpassword, salt);
-    await user.save();
-    sendToken(user, 200, res);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ errormsg: "Internal Server Error" });
   }
-});
+);
 
 /*
       API EndPoint : /api/users/profile/update 
@@ -233,8 +241,10 @@ router.put("/profile/update", verifyToken, async (req, res) => {
     const user = await User.findById(req.user._id);
     user.name = req.body.name ? req.body.name : user.name;
     user.email = req.body.email ? req.body.email : user.email;
-    if (!req.body.avatar) {
-      await cloudinary.v2.uploader.destroy(user.avatar.public_id);
+    if (req.body.avatar !== "") {
+      if (user.avatar.public_id != "") {
+        await cloudinary.v2.uploader.destroy(user.avatar.public_id);
+      }
       const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
         folder: "avatars",
         width: 150,
@@ -244,12 +254,11 @@ router.put("/profile/update", verifyToken, async (req, res) => {
         public_id: myCloud.public_id,
         url: myCloud.secure_url,
       };
-    } else {
-      user.avatar.url = req.body.avatar;
     }
     await user.save();
     res.status(200).json({ successmsg: "User Updated Successfully" });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ errormsg: "Internal Server Error" });
   }
 });

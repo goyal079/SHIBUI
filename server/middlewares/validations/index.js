@@ -15,23 +15,6 @@ function productRules() {
   ];
 }
 
-function registrationRules() {
-  return [
-    body("name", "Enter name for the product").notEmpty().isString(),
-    body("email", "Enter User Email").notEmpty().isEmail(),
-    body("password", "Password must be atleast 6 characters long")
-      .isString()
-      .notEmpty()
-      .isLength({ min: 6 }),
-  ];
-}
-function errorMiddleware(req, res, next) {
-  const errors = validationResult(req);
-  if (errors.isEmpty()) {
-    return next();
-  }
-  return res.status(400).json({ errors: errors.array() });
-}
 function userLoginValidations() {
   return [
     body("email", "Enter valid email").isEmail(),
@@ -45,10 +28,44 @@ function reviewValidations() {
     body("productId", "Enter a product Id").notEmpty().isString(),
   ];
 }
+function registrationRules() {
+  return [
+    body("name", "Enter name for the product").notEmpty().isString(),
+    body("email", "Enter User Email").notEmpty().isEmail(),
+    body("password", "Password must be atleast 6 characters long")
+      .isString()
+      .notEmpty()
+      .isLength({ min: 6 }),
+  ];
+}
+function passwordUpdateRules() {
+  return [
+    body("oldpassword", "Password must be atleast 6 characters long")
+      .isString()
+      .notEmpty(),
+    body("newpassword", "Password must be atleast 6 characters long")
+      .isString()
+      .notEmpty()
+      .isLength({ min: 6 }),
+    body("confirmpassword", "Password must be atleast 6 characters long")
+      .isString()
+      .notEmpty()
+      .isLength({ min: 6 }),
+  ];
+}
+
+function errorMiddleware(req, res, next) {
+  const errors = validationResult(req);
+  if (errors.isEmpty()) {
+    return next();
+  }
+  return res.status(400).json({ errors: errors.array() });
+}
 export {
   errorMiddleware,
   registrationRules,
   productRules,
   userLoginValidations,
   reviewValidations,
+  passwordUpdateRules,
 };

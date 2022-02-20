@@ -18,12 +18,12 @@ const MyOrders = () => {
   const { user } = useSelector((state) => state.user);
 
   const columns = [
-    { field: "id", headerName: "Order ID", minWidth: 300, flex: 1 },
+    { field: "id", headerName: "Order ID", minWidth: 280, flex: 1 },
 
     {
       field: "status",
       headerName: "Status",
-      minWidth: 150,
+      minWidth: 130,
       flex: 0.5,
       cellClassName: (params) => {
         return params.getValue(params.id, "status") === "Delivered"
@@ -35,7 +35,7 @@ const MyOrders = () => {
       field: "itemsQty",
       headerName: "Items Qty",
       type: "number",
-      minWidth: 150,
+      minWidth: 130,
       flex: 0.3,
     },
 
@@ -43,7 +43,7 @@ const MyOrders = () => {
       field: "amount",
       headerName: "Amount",
       type: "number",
-      minWidth: 270,
+      minWidth: 240,
       flex: 0.5,
     },
 
@@ -51,7 +51,7 @@ const MyOrders = () => {
       field: "actions",
       flex: 0.2,
       headerName: "Actions",
-      minWidth: 150,
+      minWidth: 130,
       type: "number",
       sortable: false,
       renderCell: (params) => {

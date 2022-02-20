@@ -42,7 +42,7 @@ export const productsReducer = (state = { products: [] }, action) => {
     case ALL_PRODUCT_SUCCESS:
       return {
         loading: false,
-        products: action.payload.products,
+        products: [...action.payload.products],
         productCount: action.payload.productCount,
         pageResults: action.payload.pageResults,
         filteredCount: action.payload.filteredCount,
@@ -50,7 +50,7 @@ export const productsReducer = (state = { products: [] }, action) => {
     case ADMIN_PRODUCT_SUCCESS:
       return {
         loading: false,
-        products: action.payload,
+        products: [...action.payload],
       };
     case ALL_PRODUCT_FAIL:
     case ADMIN_PRODUCT_FAIL:
