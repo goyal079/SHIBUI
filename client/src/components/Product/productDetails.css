@@ -24,6 +24,7 @@
 
 .CarouselImage {
   width: 20vmax;
+  box-shadow: 0 0 1.5px 1.5px #3f3f3f;
 }
 
 .detailsBlock-1 > h2 {
