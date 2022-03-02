@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/static/css/main.daf86e8e.css",
-    "main.js": "/static/js/main.f4463573.js",
-    "static/media/luffy.jpg": "/static/media/luffy.1f8fde670b966ca6c4f6.jpg",
+    "main.js": "/static/js/main.e6961d6a.js",
+    "static/media/luffy.png": "/static/media/luffy.7f1c5bcc7c1b3a559f18.png",
     "static/media/cover.jfif": "/static/media/cover.e2edeab17643ab2951c0.jfif",
     "static/media/Profile.png": "/static/media/Profile.697fdcd21f6d157b9073.png",
     "static/media/playstore.png": "/static/media/playstore.82b4831979e0ce7c733e.png",
@@ -10,10 +10,10 @@
     "static/media/logo.png": "/static/media/logo.056da6b699eb1f4bb917.png",
     "index.html": "/index.html",
     "main.daf86e8e.css.map": "/static/css/main.daf86e8e.css.map",
-    "main.f4463573.js.map": "/static/js/main.f4463573.js.map"
+    "main.e6961d6a.js.map": "/static/js/main.e6961d6a.js.map"
   },
   "entrypoints": [
     "static/css/main.daf86e8e.css",
-    "static/js/main.f4463573.js"
+    "static/js/main.e6961d6a.js"
   ]
 }
